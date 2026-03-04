@@ -1,0 +1,87 @@
+# PRD — The Kernel: Anushka Karmakar's Portfolio Terminal
+
+## Problem Statement
+Build a React-based Terminal Emulator component for a personal portfolio. The terminal is the "Kernel" of a full portfolio page, centered on a clean dark background. It accepts text input, processes a defined command set, and returns styled responses with animations.
+
+---
+
+## Architecture
+- **Stack**: React 18, Tailwind CSS 3, JetBrains Mono (Google Fonts)
+- **Backend**: Minimal FastAPI (health check only — app is frontend-pure)
+- **Storage**: In-memory React state (no database needed)
+- **Font**: JetBrains Mono via Google Fonts
+- **Hosting**: Supervisor-managed (frontend port 3000, backend port 8001)
+
+### Key Files
+| File | Purpose |
+|------|---------|
+| `frontend/src/components/Terminal.jsx` | Core terminal logic & UI |
+| `frontend/src/App.js` | Entry point, renders Terminal |
+| `frontend/src/index.css` | Global dark theme + scrollbar |
+| `frontend/tailwind.config.js` | Custom blink animation + mono font |
+| `frontend/public/index.html` | JetBrains Mono font import |
+
+---
+
+## User Personas
+- **Recruiter / Hiring Manager**: Wants to quickly scan career background. Types `log` or `whoami`.
+- **Tech Founder / Collaborator**: Curious about tech cred. Types `status` or explores commands.
+- **PMM Peer**: Wants context on PLG/DevTool experience. Types `log`.
+
+---
+
+## Core Requirements (Static)
+1. Dark matte theme: `#0D0D0D` bg, `#E0E0E0` text, `#7F7AFF` accent, `#333333` border
+2. Monospace font (JetBrains Mono)
+3. 5 commands: `help`, `whoami`, `status`, `log`, `clear`
+4. Command outputs match the spec exactly
+5. Typewriter effect: 20ms/char
+6. Blinking block cursor (#7F7AFF)
+7. Auto-scroll to bottom on new output
+8. Auto-focus input on load + click-to-focus
+9. ArrowUp/Down for command history navigation
+10. `[v1.x]` tags in log output highlighted in purple
+
+---
+
+## Command Dictionary
+| Command | Output |
+|---------|--------|
+| `help` | `Available commands: [whoami, status, log, clear]` |
+| `whoami` | `Anushka Karmakar \| Product Marketing Manager \| Deep Tech & DevTools` |
+| `status` | `LHS = RHS. System: v1.8. Growth logic initialized. Zero-slop environment active.` |
+| `log` | 5-entry career history (v1.8 → v0.1), descending |
+| `clear` | Wipes terminal history |
+
+---
+
+## What's Been Implemented (Feb 2026)
+- [x] Full terminal UI with dark theme and JetBrains Mono
+- [x] All 5 commands with exact outputs from spec
+- [x] TypewriterText component (20ms/char, character-by-character)
+- [x] Purple highlight for `[vX.X]` tags in log output
+- [x] Blinking block cursor in `#7F7AFF`
+- [x] Auto-focus input + click-anywhere-to-focus
+- [x] ArrowUp / ArrowDown command history navigation
+- [x] Tab key prevention (keeps focus in terminal)
+- [x] Scroll anchor for smooth auto-scroll
+- [x] Custom scrollbar styled to match theme
+- [x] Boot message: "The Kernel — v1.8.0"
+- [x] Testing: 95% pass rate via Playwright automation
+
+---
+
+## Backlog / Future Enhancements
+### P0 — None (MVP complete)
+### P1 — Nice to Have
+- `contact` command with clickable email/LinkedIn links
+- `projects` command with portfolio links
+- Paste support for terminal input
+- Mobile keyboard improvements
+- ASCII art header for boot message
+
+### P2 — Future
+- Tab completion for command names
+- `socials` command
+- Subtle CRT scanline overlay (optional)
+- Share terminal session link
