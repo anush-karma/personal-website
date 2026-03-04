@@ -31,11 +31,18 @@ function resolveCommand(cmd) {
 
 // ─── TypewriterText ───────────────────────────────────────────────────────────
 
-function TypewriterText({ text, speed, onScrollRequest }) {
+function TypewriterText({ text, speed, onScrollRequest, onComplete }) {
   const [count, setCount] = useState(0);
+  const completedRef = useRef(false);
 
   useEffect(() => {
-    if (count >= text.length) return;
+    if (count >= text.length) {
+      if (!completedRef.current) {
+        completedRef.current = true;
+        onComplete?.();
+      }
+      return;
+    }
     const t = setTimeout(() => {
       setCount(c => c + 1);
       onScrollRequest?.();
@@ -75,11 +82,20 @@ function TypewriterText({ text, speed, onScrollRequest }) {
 let _uid = 0;
 const uid = () => ++_uid;
 
+const BOOT_LINES = [
+  'Initializing AK-OS [v1.8]...',
+  'Loading Deep_Tech_Modules...',
+  'System ready. Anushka Karmakar active.',
+  "Type 'help' or use the buttons below.",
+];
+
 export default function Terminal() {
   const [history, setHistory] = useState([]);
   const [input, setInput] = useState('');
   const [cmdHistory, setCmdHistory] = useState([]);
   const [histIdx, setHistIdx] = useState(-1);
+  const [bootDone, setBootDone] = useState(false);
+  const bootIdxRef = useRef(0);
 
   const inputRef = useRef(null);
   const bottomRef = useRef(null);
@@ -92,6 +108,25 @@ export default function Terminal() {
   useEffect(() => {
     scrollToBottom();
   }, [history, scrollToBottom]);
+
+  // Boot sequence — each line kicks off the next via onComplete
+  const addNextBootLine = useCallback(() => {
+    const idx = bootIdxRef.current;
+    if (idx < BOOT_LINES.length) {
+      bootIdxRef.current = idx + 1;
+      setHistory(prev => [
+        ...prev,
+        { id: uid(), type: 'boot', text: BOOT_LINES[idx] },
+      ]);
+    } else {
+      setBootDone(true);
+    }
+  }, []);
+
+  // Kick off boot on mount
+  useEffect(() => {
+    addNextBootLine();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const processCommand = useCallback((raw) => {
     const result = resolveCommand(raw);
@@ -115,6 +150,7 @@ export default function Terminal() {
 
   const onKeyDown = useCallback(
     e => {
+      if (!bootDone) return;
       if (e.key === 'Enter') {
         const cmd = input;
         setInput('');
@@ -137,7 +173,7 @@ export default function Terminal() {
         e.preventDefault();
       }
     },
-    [input, histIdx, cmdHistory, processCommand]
+    [bootDone, input, histIdx, cmdHistory, processCommand]
   );
 
   const focusInput = () => inputRef.current?.focus();
@@ -146,7 +182,7 @@ export default function Terminal() {
     <div
       onClick={focusInput}
       style={{ backgroundColor: '#0D0D0D', minHeight: '100vh' }}
-      className="flex items-center justify-center p-4 sm:p-8 font-mono"
+      className="flex flex-col items-center justify-center p-4 sm:p-8 font-mono gap-4"
     >
       {/* ── Terminal Window ── */}
       <div
@@ -221,6 +257,15 @@ export default function Terminal() {
                   {item.text}
                 </span>
               </div>
+            ) : item.type === 'boot' ? (
+              <div key={item.id} className="mb-1" style={{ lineHeight: '1.7' }}>
+                <TypewriterText
+                  text={item.text}
+                  speed={20}
+                  onScrollRequest={scrollToBottom}
+                  onComplete={addNextBootLine}
+                />
+              </div>
             ) : (
               <div key={item.id} className="mb-4">
                 <TypewriterText
@@ -242,7 +287,7 @@ export default function Terminal() {
           style={{ backgroundColor: '#0D0D0D', borderTop: '1px solid #333333' }}
         >
           <span
-            style={{ color: '#7F7AFF', userSelect: 'none' }}
+            style={{ color: bootDone ? '#7F7AFF' : '#444444', userSelect: 'none' }}
             className="shrink-0 text-sm"
           >
             guest@kernel:~$
@@ -257,7 +302,7 @@ export default function Terminal() {
               style={{
                 width: '0.55em',
                 height: '1.15em',
-                backgroundColor: '#7F7AFF',
+                backgroundColor: bootDone ? '#7F7AFF' : '#333333',
                 marginLeft: '1px',
                 verticalAlign: 'middle',
               }}
@@ -269,6 +314,7 @@ export default function Terminal() {
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={onKeyDown}
+              disabled={!bootDone}
               style={{
                 position: 'absolute',
                 opacity: 0,
@@ -286,6 +332,49 @@ export default function Terminal() {
             />
           </div>
         </div>
+      </div>
+
+      {/* ── Hot Chips ── */}
+      <div
+        data-testid="hot-chips"
+        className="flex items-center gap-3 w-full max-w-4xl"
+        onClick={e => e.stopPropagation()}
+      >
+        {[
+          { label: 'whoami', color: '#7F7AFF' },
+          { label: 'log',    color: '#FFD632' },
+          { label: 'status', color: '#F379AC' },
+        ].map(({ label, color }) => (
+          <button
+            key={label}
+            data-testid={`chip-${label}`}
+            disabled={!bootDone}
+            onClick={() => {
+              processCommand(label);
+              focusInput();
+            }}
+            style={{
+              backgroundColor: 'transparent',
+              border: `1px solid ${color}`,
+              color: color,
+              padding: '6px 18px',
+              fontFamily: 'inherit',
+              fontSize: '13px',
+              cursor: bootDone ? 'pointer' : 'not-allowed',
+              borderRadius: '4px',
+              opacity: bootDone ? 1 : 0.35,
+              transition: 'background-color 150ms ease, opacity 150ms ease',
+            }}
+            onMouseEnter={e => {
+              if (bootDone) e.currentTarget.style.backgroundColor = `${color}18`;
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+          >
+            [{label}]
+          </button>
+        ))}
       </div>
     </div>
   );
