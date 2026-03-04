@@ -37,7 +37,7 @@ export const VISUALIZER_CARDS = {
       },
       {
         type: 'image',
-        src: '/dogs.png',
+        src: process.env.PUBLIC_URL + '/dogs.png',
         label: 'Dogs',
       },
       {
