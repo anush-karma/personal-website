@@ -87,11 +87,28 @@ Build a React-based Terminal Emulator component for a personal portfolio. The te
 - [x] Chips call `processCommand` directly, same as keyboard — no duplicate logic
 - [x] Testing: 100% pass rate (17/17 tests) via Playwright automation
 
+### Sprint 4 — Responsive Visualizer (Feb 2026)
+- [x] Dual-pane layout: 60/40 flex-row on desktop (≥1024px), single-column on mobile
+- [x] Visualizer Stage (right pane): shows placeholder text until a command is run
+- [x] VisualizerCard component: Lora serif, left border accent, content lines, image fallback
+- [x] whoami card: purple border (#7F7AFF), 3 lines, olly.png placeholder
+- [x] log card: yellow border (#FFD632), 5 career log lines, dogs.png placeholder
+- [x] status card: pink border (#F379AC), 4 status lines, no image
+- [x] Cards animate in with fadeSlideUp (0.4s ease-out), re-mount on command change
+- [x] `clear` command resets active card back to placeholder
+- [x] Mobile bottom-sheet drawer: slides up with drawerSlideUp animation
+- [x] Drawer has drag handle + ✕ close button (dismisses on click)
+- [x] Distinct data-testids for desktop vs mobile card instances
+- [x] Lora font added to Google Fonts import in index.html
+- [x] fadeSlideUp + drawerSlideUp keyframes added to index.css
+- [x] Testing: 100% pass rate (30/30 tests via Playwright — desktop + mobile)
+
 ---
 
 ## Backlog / Future Enhancements
-### P0 — None (MVP complete)
+### P0 — None (all sprints complete)
 ### P1 — Nice to Have
+- Upload actual `olly.png` and `dogs.png` to `/public/` to replace image placeholders
 - `contact` command with clickable email/LinkedIn links
 - `projects` command with portfolio links
 - Paste support for terminal input

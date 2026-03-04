@@ -539,6 +539,7 @@ export default function Terminal() {
             <VisualizerCard
               key={`mobile-${activeCard}`}
               card={VISUALIZER_CARDS[activeCard]}
+              testIdSuffix="-mobile"
             />
           </div>
         </div>

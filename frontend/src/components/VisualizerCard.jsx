@@ -41,10 +41,10 @@ function ImageWithFallback({ src, label }) {
 
 // ─── VisualizerCard ───────────────────────────────────────────────────────────
 
-export default function VisualizerCard({ card }) {
+export default function VisualizerCard({ card, testIdSuffix = '' }) {
   return (
     <div
-      data-testid={`visualizer-card-${card.id}`}
+      data-testid={`visualizer-card${testIdSuffix}-${card.id}`}
       style={{
         width: '100%',
         paddingLeft: '20px',
