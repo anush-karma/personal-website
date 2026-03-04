@@ -470,10 +470,11 @@ export default function Terminal() {
         {/* ── Right Pane: Visualizer Stage (desktop ≥1024px only) ── */}
         <div
           data-testid="visualizer-stage"
-          className="hidden lg:flex lg:w-2/5 flex-col justify-center"
+          className="hidden lg:flex lg:w-2/5 flex-col"
           style={{
-            padding: '40px 40px 80px 40px',
+            padding: '48px 40px 80px 40px',
             borderLeft: '1px solid #F0F0F0',
+            overflowY: 'auto',
           }}
         >
           {activeCard ? (

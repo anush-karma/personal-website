@@ -91,9 +91,13 @@ Build a React-based Terminal Emulator component for a personal portfolio. The te
 - [x] Dual-pane layout: 60/40 flex-row on desktop (≥1024px), single-column on mobile
 - [x] Visualizer Stage (right pane): shows placeholder text until a command is run
 - [x] VisualizerCard component: Lora serif, left border accent, content lines, image fallback
-- [x] whoami card: purple border (#7F7AFF), 3 lines, olly.png placeholder
-- [x] log card: yellow border (#FFD632), 5 career log lines, dogs.png placeholder
-- [x] status card: pink border (#F379AC), 4 status lines, no image
+- [x] whoami card: purple border (#7F7AFF), "Structural GTM" header + full body paragraph
+- [x] log card: yellow border (#FFD632), company/subtitle/olly.png/6 bullets/past section
+- [x] status card: pink border (#F379AC), body/dogs.png/italic footer
+- [x] Images (olly.png, dogs.png) saved to /public/ -- transparent PNGs rendering on white bg
+- [x] Image fallback: [Visual Artifact: Name] dashed box
+- [x] Sections-based data model in VisualizerContent.js (header/body/company/subtitle/image/bullets/past/footer)
+- [x] No em dashes in any content or code; right pane scrollable for tall cards
 - [x] Cards animate in with fadeSlideUp (0.4s ease-out), re-mount on command change
 - [x] `clear` command resets active card back to placeholder
 - [x] Mobile bottom-sheet drawer: slides up with drawerSlideUp animation
