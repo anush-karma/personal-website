@@ -1,0 +1,132 @@
+{
+  "project_name": "Anushka Karmakar Portfolio - The Kernel",
+  "theme": "dark",
+  "identity": {
+    "name": "Anushka Karmakar",
+    "role": "Product Marketing Manager",
+    "concept": "The Kernel - A Terminal-based Portfolio",
+    "tone": "Technical, Minimalist, Efficient, High-Agency"
+  },
+  "typography": {
+    "font_family": "JetBrains Mono, monospace",
+    "google_fonts_url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap",
+    "sizes": {
+      "base": "16px",
+      "h1": "24px",
+      "h2": "20px",
+      "small": "14px"
+    },
+    "weights": {
+      "regular": 400,
+      "medium": 500,
+      "bold": 700
+    }
+  },
+  "colors": {
+    "background": {
+      "primary": "#0D0D0D",
+      "secondary": "#111111",
+      "highlight": "#1A1A1A"
+    },
+    "text": {
+      "primary": "#E0E0E0",
+      "secondary": "#A0A0A0",
+      "muted": "#666666"
+    },
+    "accent": {
+      "primary": "#7F7AFF",
+      "secondary": "#6B66DA",
+      "glow": "rgba(127, 122, 255, 0.2)"
+    },
+    "border": {
+      "default": "#333333",
+      "active": "#555555"
+    },
+    "functional": {
+      "success": "#00FF9C",
+      "error": "#FF5555",
+      "warning": "#FFB86C",
+      "info": "#8BE9FD"
+    }
+  },
+  "visual_enhancers": {
+    "cursor": {
+      "style": "block",
+      "animation": "blink 1s step-end infinite",
+      "color": "#7F7AFF"
+    },
+    "scanlines": "linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))",
+    "crt_flicker": "opacity: 0.98; pointer-events: none;",
+    "shadows": {
+      "terminal": "0 0 0 1px #333333, 0 20px 50px rgba(0,0,0,0.5)"
+    }
+  },
+  "layout": {
+    "structure": "Single Page Application",
+    "container": "max-w-4xl mx-auto h-[80vh] my-auto",
+    "responsive": "Full width/height on mobile, Windowed on desktop",
+    "grid_strategy": "Flexbox (Column) for terminal flow"
+  },
+  "components": {
+    "TerminalWindow": {
+      "description": "The main container. Looks like a clean macOS/Linux terminal window.",
+      "styles": "bg-[#0D0D0D] border border-[#333333] rounded-lg shadow-2xl overflow-hidden flex flex-col font-mono text-[#E0E0E0] relative",
+      "header": "Mac-style buttons (monochrome/dimmed) or simple text title 'guest@anushka-portfolio:~'"
+    },
+    "CommandInput": {
+      "description": "Interactive input line.",
+      "styles": "bg-transparent border-none outline-none text-[#E0E0E0] w-full caret-transparent",
+      "prefix": "guest@kernel:~$",
+      "prefix_color": "#7F7AFF"
+    },
+    "HistoryBlock": {
+      "description": "Renders previous commands and outputs.",
+      "styles": "mb-2"
+    },
+    "TypewriterEffect": {
+      "description": "Animates text output character by character.",
+      "speed": "20ms",
+      "cursor_hide_on_finish": true
+    }
+  },
+  "assets": {
+    "images": [
+      {
+        "category": "profile",
+        "description": "Professional headshot, thoughtful, dark background",
+        "url": "https://images.unsplash.com/photo-1769555949533-703d68e62a02?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdCUyMHdvbWFuJTIwZGFyayUyMGJhY2tncm91bmQlMjBtaW5pbWFsaXN0fGVufDB8fHx8MTc3MjYwMjk2OXww&ixlib=rb-4.1.0&q=85",
+        "usage": "Use in 'whoami' command output, styled as a small, pixelated or grayscale ASCII-adjacent image"
+      }
+    ],
+    "icons": {
+      "library": "lucide-react",
+      "set": ["Terminal", "Cpu", "User", "Mail", "Github", "Linkedin"]
+    }
+  },
+  "commands_definition": {
+    "help": "Lists all available commands.",
+    "whoami": "Displays profile photo + short bio (Product Marketing Manager).",
+    "status": "Current availability (e.g., 'Open for opportunities').",
+    "log": "Simulated 'git log' style history of career highlights.",
+    "clear": "Clears the terminal screen.",
+    "contact": "Outputs clickable links for Email and LinkedIn."
+  },
+  "instructions_to_main_agent": [
+    "Use standard React functional components.",
+    "Store terminal history in a state array: [{ command: 'help', output: <Component/> }, ...]",
+    "Implement a custom hook `useTypewriter` for the text animation.",
+    "Ensure the input field is always focused when the user clicks anywhere in the terminal.",
+    "Handle 'Enter' key to submit commands.",
+    "Support 'ArrowUp' / 'ArrowDown' for command history navigation (like real bash).",
+    "Use Tailwind CSS for all styling.",
+    "Do NOT use heavy external UI libraries for the terminal logic; build it from scratch using React state for authenticity.",
+    "Ensure 'data-testid' attributes are present on the input and output blocks.",
+    "For the 'whoami' command, render the profile image using a standard <img> tag with a grayscale filter (`grayscale`) to match the monochrome aesthetic, max width 150px."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Do not use generic gradients.",
+    "Ensure high contrast text (APCA/WCAG compliant).",
+    "Use 'sonner' for any system notifications if needed (e.g., 'Copied to clipboard').",
+    "Add 'data-testid' to all interactive elements."
+  ]
+}
