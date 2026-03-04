@@ -31,7 +31,7 @@ function resolveCommand(cmd) {
 
 // ─── TypewriterText ───────────────────────────────────────────────────────────
 
-function TypewriterText({ text, speed, onScrollRequest, onComplete }) {
+function TypewriterText({ text, speed, onScrollRequest, onComplete, showCursor }) {
   const [count, setCount] = useState(0);
   const completedRef = useRef(false);
 
@@ -57,7 +57,8 @@ function TypewriterText({ text, speed, onScrollRequest, onComplete }) {
       data-testid="response-block"
       style={{ color: '#E0E0E0', whiteSpace: 'pre-wrap', lineHeight: '1.7' }}
     >
-      {displayed.split('\n').map((line, i) => {
+      {displayed.split('\n').map((line, i, arr) => {
+        const isLast = i === arr.length - 1;
         const parts = line.split(/(\[v\d+\.\d+\])/g);
         return (
           <div key={i}>
@@ -69,6 +70,19 @@ function TypewriterText({ text, speed, onScrollRequest, onComplete }) {
               ) : (
                 <span key={j}>{part}</span>
               )
+            )}
+            {/* Inline cursor trails the last typed char on the active boot line */}
+            {showCursor && isLast && (
+              <span
+                className="animate-blink inline-block"
+                style={{
+                  width: '0.55em',
+                  height: '1.05em',
+                  backgroundColor: '#7F7AFF',
+                  marginLeft: '1px',
+                  verticalAlign: 'middle',
+                }}
+              />
             )}
           </div>
         );
@@ -95,7 +109,7 @@ export default function Terminal() {
   const [cmdHistory, setCmdHistory] = useState([]);
   const [histIdx, setHistIdx] = useState(-1);
   const [bootDone, setBootDone] = useState(false);
-  const bootIdxRef = useRef(0);
+  const [currentBootLine, setCurrentBootLine] = useState(-1);
 
   const inputRef = useRef(null);
   const bottomRef = useRef(null);
@@ -109,23 +123,33 @@ export default function Terminal() {
     scrollToBottom();
   }, [history, scrollToBottom]);
 
-  // Boot sequence — each line kicks off the next via onComplete
-  const addNextBootLine = useCallback(() => {
-    const idx = bootIdxRef.current;
-    if (idx < BOOT_LINES.length) {
-      bootIdxRef.current = idx + 1;
-      setHistory(prev => [
-        ...prev,
-        { id: uid(), type: 'boot', text: BOOT_LINES[idx] },
-      ]);
-    } else {
-      setBootDone(true);
-    }
-  }, []);
-
-  // Kick off boot on mount
+  // Boot sequence: each line queued at cumulative delay (string length × 20ms)
   useEffect(() => {
-    addNextBootLine();
+    const timeouts = [];
+    let delay = 0;
+
+    BOOT_LINES.forEach((line, i) => {
+      timeouts.push(
+        setTimeout(() => {
+          setCurrentBootLine(i);
+          setHistory(prev => [
+            ...prev,
+            { id: uid(), type: 'boot', text: line, lineIdx: i },
+          ]);
+        }, delay)
+      );
+      delay += line.length * 20; // wait for this line to finish before starting next
+    });
+
+    // Activate input + Hot Chips after the final line finishes typing
+    timeouts.push(
+      setTimeout(() => {
+        setCurrentBootLine(-1);
+        setBootDone(true);
+      }, delay)
+    );
+
+    return () => timeouts.forEach(clearTimeout);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const processCommand = useCallback((raw) => {
@@ -263,7 +287,7 @@ export default function Terminal() {
                   text={item.text}
                   speed={20}
                   onScrollRequest={scrollToBottom}
-                  onComplete={addNextBootLine}
+                  showCursor={currentBootLine === item.lineIdx}
                 />
               </div>
             ) : (
