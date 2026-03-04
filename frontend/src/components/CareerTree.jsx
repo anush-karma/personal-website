@@ -32,7 +32,7 @@ const FOLDERS = [
         id: 'mascot',
         label: 'Mascot',
         content: "Designed and launched 'Olly' (Arctic Bear) at KubeCon NA.",
-        image: { src: '/olly.png', label: 'Olly' },
+        image: { src: process.env.PUBLIC_URL + '/olly.png', label: 'Olly' },
       },
       {
         id: 'gtm',
