@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import VisualizerCard from './VisualizerCard';
+import { VISUALIZER_CARDS } from '../VisualizerContent';
 
 // ─── Command Dictionary ───────────────────────────────────────────────────────
 
@@ -71,7 +73,6 @@ function TypewriterText({ text, speed, onScrollRequest, onComplete, showCursor }
                 <span key={j}>{part}</span>
               )
             )}
-            {/* Inline cursor trails the last typed char on the active boot line */}
             {showCursor && isLast && (
               <span
                 className="animate-blink inline-block"
@@ -87,6 +88,45 @@ function TypewriterText({ text, speed, onScrollRequest, onComplete, showCursor }
           </div>
         );
       })}
+    </div>
+  );
+}
+
+// ─── VisualizerPlaceholder ────────────────────────────────────────────────────
+
+function VisualizerPlaceholder() {
+  return (
+    <div
+      data-testid="visualizer-placeholder"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '10px',
+        opacity: 0.3,
+      }}
+    >
+      <div
+        style={{
+          width: '28px',
+          height: '1px',
+          backgroundColor: '#AAAAAA',
+          marginBottom: '10px',
+        }}
+      />
+      <p
+        style={{
+          fontFamily: "'Lora', Georgia, serif",
+          fontSize: '13px',
+          color: '#888888',
+          textAlign: 'center',
+          lineHeight: '1.7',
+        }}
+      >
+        run whoami, log,
+        <br />
+        or status to see more
+      </p>
     </div>
   );
 }
@@ -110,6 +150,7 @@ export default function Terminal() {
   const [histIdx, setHistIdx] = useState(-1);
   const [bootDone, setBootDone] = useState(false);
   const [currentBootLine, setCurrentBootLine] = useState(-1);
+  const [activeCard, setActiveCard] = useState(null);
 
   const inputRef = useRef(null);
   const bottomRef = useRef(null);
@@ -138,10 +179,9 @@ export default function Terminal() {
           ]);
         }, delay)
       );
-      delay += line.length * 20; // wait for this line to finish before starting next
+      delay += line.length * 20;
     });
 
-    // Activate input + Hot Chips after the final line finishes typing
     timeouts.push(
       setTimeout(() => {
         setCurrentBootLine(-1);
@@ -154,10 +194,16 @@ export default function Terminal() {
 
   const processCommand = useCallback((raw) => {
     const result = resolveCommand(raw);
+    const cmd = raw.trim().toLowerCase();
 
     if (result === '__CLEAR__') {
       setHistory([]);
+      setActiveCard(null);
       return;
+    }
+
+    if (['whoami', 'log', 'status'].includes(cmd)) {
+      setActiveCard(cmd);
     }
 
     const entries = [];
@@ -204,215 +250,299 @@ export default function Terminal() {
 
   return (
     <div
-      onClick={focusInput}
-      style={{ backgroundColor: '#FFFFFF', height: '100vh', overflow: 'hidden' }}
-      className="flex items-center justify-center"
+      style={{
+        backgroundColor: '#FFFFFF',
+        height: '100vh',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
     >
-      {/* Content column: terminal + chips, vertically centered */}
-      <div
-        className="flex flex-col w-full"
-        style={{ maxWidth: '850px', padding: '20px 16px 80px', height: '100%', gap: '32px' }}
-      >
-        {/* ── Terminal Window ── */}
+      {/* ── Main layout: single column on mobile, 60/40 row on desktop ── */}
+      <div className="flex h-full">
+
+        {/* ── Left Pane: Terminal + Hot Chips ── */}
         <div
-          data-testid="terminal-window"
-          className="rounded-lg overflow-hidden flex flex-col"
+          onClick={focusInput}
+          className="flex flex-col w-full lg:w-3/5"
+          style={{ padding: '20px 16px 80px', gap: '32px', height: '100%', minWidth: 0 }}
+        >
+
+          {/* Terminal Window */}
+          <div
+            data-testid="terminal-window"
+            className="rounded-lg overflow-hidden flex flex-col"
+            style={{
+              flex: 1,
+              minHeight: '500px',
+              backgroundColor: '#0D0D0D',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            {/* Title Bar */}
+            <div
+              className="relative flex items-center px-4 py-3 shrink-0 select-none"
+              style={{ backgroundColor: '#1A1A1A', borderBottom: '1px solid #2a2a2a' }}
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FF5F56' }} />
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFBD2E' }} />
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#27C93F' }} />
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <span
+                  style={{
+                    fontSize: '12px',
+                    color: '#666666',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  anushka-karmakar — zsh
+                </span>
+              </div>
+            </div>
+
+            {/* Output Area */}
+            <div
+              data-testid="terminal-output"
+              className="flex-1 overflow-y-auto p-5 text-sm"
+              style={{ backgroundColor: '#0D0D0D' }}
+            >
+              {/* Boot Header */}
+              <div className="mb-6 select-none">
+                <p style={{ color: '#7F7AFF', fontWeight: 700, fontSize: '15px' }}>
+                  The Kernel — v1.8.0
+                </p>
+                <p style={{ color: '#888888', marginTop: '2px' }}>
+                  Anushka Karmakar's Portfolio Terminal
+                </p>
+                <p style={{ color: '#333333', marginTop: '6px', letterSpacing: '0.05em' }}>
+                  {'─'.repeat(54)}
+                </p>
+                <p style={{ color: '#666666', marginTop: '6px' }}>
+                  Type{' '}
+                  <span style={{ color: '#7F7AFF' }}>'help'</span>
+                  {' '}to get started.
+                </p>
+              </div>
+
+              {/* Command / Response History */}
+              {history.map(item =>
+                item.type === 'command' ? (
+                  <div
+                    key={item.id}
+                    className="flex gap-3 mb-1"
+                    style={{ lineHeight: '1.7' }}
+                  >
+                    <span
+                      style={{ color: '#7F7AFF', userSelect: 'none' }}
+                      className="shrink-0"
+                    >
+                      guest@kernel:~$
+                    </span>
+                    <span data-testid="command-entry" style={{ color: '#FFFFFF' }}>
+                      {item.text}
+                    </span>
+                  </div>
+                ) : item.type === 'boot' ? (
+                  <div key={item.id} className="mb-1" style={{ lineHeight: '1.7' }}>
+                    <TypewriterText
+                      text={item.text}
+                      speed={20}
+                      onScrollRequest={scrollToBottom}
+                      showCursor={currentBootLine === item.lineIdx}
+                    />
+                  </div>
+                ) : (
+                  <div key={item.id} className="mb-4">
+                    <TypewriterText
+                      text={item.text}
+                      speed={20}
+                      onScrollRequest={scrollToBottom}
+                    />
+                  </div>
+                )
+              )}
+
+              <div ref={bottomRef} />
+            </div>
+
+            {/* Input Bar */}
+            <div
+              className="flex items-center gap-3 px-5 py-3 shrink-0"
+              style={{ backgroundColor: '#0D0D0D', borderTop: '1px solid #333333' }}
+            >
+              <span
+                style={{ color: bootDone ? '#7F7AFF' : '#444444', userSelect: 'none' }}
+                className="shrink-0 text-sm"
+              >
+                guest@kernel:~$
+              </span>
+
+              <div className="relative flex-1 flex items-center text-sm">
+                <span style={{ color: '#FFFFFF' }}>{input}</span>
+                <span
+                  data-testid="terminal-cursor"
+                  className="animate-blink inline-block"
+                  style={{
+                    width: '0.55em',
+                    height: '1.15em',
+                    backgroundColor: bootDone ? '#7F7AFF' : '#333333',
+                    marginLeft: '1px',
+                    verticalAlign: 'middle',
+                  }}
+                />
+                <input
+                  ref={inputRef}
+                  data-testid="terminal-input"
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  onKeyDown={onKeyDown}
+                  disabled={!bootDone}
+                  style={{
+                    position: 'absolute',
+                    opacity: 0,
+                    width: '1px',
+                    height: '1px',
+                    top: 0,
+                    left: 0,
+                  }}
+                  autoFocus
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                  aria-label="Terminal input"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Hot Chips */}
+          <div
+            data-testid="hot-chips"
+            className="flex items-center shrink-0"
+            style={{ gap: '12px' }}
+            onClick={e => e.stopPropagation()}
+          >
+            {[
+              { label: 'whoami', bg: '#7F7AFF', text: '#FFFFFF', shadow: 'rgba(127,122,255,0.35)' },
+              { label: 'log',    bg: '#FFD632', text: '#111111', shadow: 'rgba(255,214,50,0.4)'   },
+              { label: 'status', bg: '#F379AC', text: '#FFFFFF', shadow: 'rgba(243,121,172,0.35)' },
+            ].map(({ label, bg, text, shadow }) => (
+              <button
+                key={label}
+                data-testid={`chip-${label}`}
+                disabled={!bootDone}
+                onClick={() => { processCommand(label); focusInput(); }}
+                style={{
+                  backgroundColor: bg,
+                  border: 'none',
+                  color: text,
+                  padding: '9px 22px',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  fontWeight: 700,
+                  fontSize: '13px',
+                  cursor: bootDone ? 'pointer' : 'not-allowed',
+                  borderRadius: '8px',
+                  opacity: bootDone ? 1 : 0.4,
+                  transition: 'all 0.2s ease',
+                  boxShadow: bootDone ? `0 2px 10px ${shadow}` : 'none',
+                  letterSpacing: '0.02em',
+                }}
+                onMouseEnter={e => {
+                  if (!bootDone) return;
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                  e.currentTarget.style.boxShadow = `0 8px 24px ${shadow}`;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = bootDone ? `0 2px 10px ${shadow}` : 'none';
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Right Pane: Visualizer Stage (desktop ≥1024px only) ── */}
+        <div
+          data-testid="visualizer-stage"
+          className="hidden lg:flex lg:w-2/5 flex-col justify-center"
           style={{
-            flex: 1,
-            minHeight: '500px',
-            backgroundColor: '#0D0D0D',
-            border: '1px solid rgba(0, 0, 0, 0.08)',
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.1)',
+            padding: '40px 40px 80px 40px',
+            borderLeft: '1px solid #F0F0F0',
           }}
         >
-        {/* Title Bar */}
-        <div
-          className="relative flex items-center px-4 py-3 shrink-0 select-none"
-          style={{ backgroundColor: '#1A1A1A', borderBottom: '1px solid #2a2a2a' }}
-        >
-          {/* Stoplight dots */}
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FF5F56' }} />
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFBD2E' }} />
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#27C93F' }} />
-          </div>
-          {/* Centered title */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span style={{ fontSize: '12px', color: '#666666', fontFamily: 'Inter, system-ui, -apple-system, sans-serif', letterSpacing: '0.04em' }}>
-              anushka-karmakar — zsh
-            </span>
-          </div>
-        </div>
-
-        {/* Output Area */}
-        <div
-          data-testid="terminal-output"
-          className="flex-1 overflow-y-auto p-5 text-sm"
-          style={{ backgroundColor: '#0D0D0D' }}
-        >
-          {/* Boot Message */}
-          <div className="mb-6 select-none">
-            <p style={{ color: '#7F7AFF', fontWeight: 700, fontSize: '15px' }}>
-              The Kernel — v1.8.0
-            </p>
-            <p style={{ color: '#888888', marginTop: '2px' }}>
-              Anushka Karmakar's Portfolio Terminal
-            </p>
-            <p style={{ color: '#333333', marginTop: '6px', letterSpacing: '0.05em' }}>
-              {'─'.repeat(54)}
-            </p>
-            <p style={{ color: '#666666', marginTop: '6px' }}>
-              Type{' '}
-              <span style={{ color: '#7F7AFF' }}>'help'</span>
-              {' '}to get started.
-            </p>
-          </div>
-
-          {/* Command History */}
-          {history.map(item =>
-            item.type === 'command' ? (
-              <div
-                key={item.id}
-                className="flex gap-3 mb-1"
-                style={{ lineHeight: '1.7' }}
-              >
-                <span
-                  style={{ color: '#7F7AFF', userSelect: 'none' }}
-                  className="shrink-0"
-                >
-                  guest@kernel:~$
-                </span>
-                <span
-                  data-testid="command-entry"
-                  style={{ color: '#FFFFFF' }}
-                >
-                  {item.text}
-                </span>
-              </div>
-            ) : item.type === 'boot' ? (
-              <div key={item.id} className="mb-1" style={{ lineHeight: '1.7' }}>
-                <TypewriterText
-                  text={item.text}
-                  speed={20}
-                  onScrollRequest={scrollToBottom}
-                  showCursor={currentBootLine === item.lineIdx}
-                />
-              </div>
-            ) : (
-              <div key={item.id} className="mb-4">
-                <TypewriterText
-                  text={item.text}
-                  speed={20}
-                  onScrollRequest={scrollToBottom}
-                />
-              </div>
-            )
+          {activeCard ? (
+            <VisualizerCard key={activeCard} card={VISUALIZER_CARDS[activeCard]} />
+          ) : (
+            <VisualizerPlaceholder />
           )}
-
-          {/* Scroll anchor */}
-          <div ref={bottomRef} />
-        </div>
-
-        {/* Input Bar */}
-        <div
-          className="flex items-center gap-3 px-5 py-3 shrink-0"
-          style={{ backgroundColor: '#0D0D0D', borderTop: '1px solid #333333' }}
-        >
-          <span
-            style={{ color: bootDone ? '#7F7AFF' : '#444444', userSelect: 'none' }}
-            className="shrink-0 text-sm"
-          >
-            guest@kernel:~$
-          </span>
-
-          {/* Visible text + cursor display */}
-          <div className="relative flex-1 flex items-center text-sm">
-            <span style={{ color: '#FFFFFF' }}>{input}</span>
-            <span
-              data-testid="terminal-cursor"
-              className="animate-blink inline-block"
-              style={{
-                width: '0.55em',
-                height: '1.15em',
-                backgroundColor: bootDone ? '#7F7AFF' : '#333333',
-                marginLeft: '1px',
-                verticalAlign: 'middle',
-              }}
-            />
-            {/* Hidden but focusable real input */}
-            <input
-              ref={inputRef}
-              data-testid="terminal-input"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={onKeyDown}
-              disabled={!bootDone}
-              style={{
-                position: 'absolute',
-                opacity: 0,
-                width: '1px',
-                height: '1px',
-                top: 0,
-                left: 0,
-              }}
-              autoFocus
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck={false}
-              aria-label="Terminal input"
-            />
-          </div>
         </div>
       </div>
 
-      {/* ── Hot Chips ── */}
+      {/* ── Mobile Bottom Drawer (<1024px only) ── */}
+      {activeCard && (
         <div
-          data-testid="hot-chips"
-          className="flex items-center shrink-0"
-          style={{ gap: '12px' }}
-          onClick={e => e.stopPropagation()}
+          data-testid="mobile-drawer"
+          className="lg:hidden fixed inset-x-0 bottom-0 z-50"
+          style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '16px 16px 0 0',
+            boxShadow: '0 -8px 40px rgba(0,0,0,0.15)',
+            maxHeight: '60vh',
+            overflow: 'auto',
+            animation: 'drawerSlideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1) both',
+          }}
         >
-          {[
-            { label: 'whoami', bg: '#7F7AFF', text: '#FFFFFF', shadow: 'rgba(127,122,255,0.35)' },
-            { label: 'log',    bg: '#FFD632', text: '#111111', shadow: 'rgba(255,214,50,0.4)'   },
-            { label: 'status', bg: '#F379AC', text: '#FFFFFF', shadow: 'rgba(243,121,172,0.35)' },
-          ].map(({ label, bg, text, shadow }) => (
-            <button
-              key={label}
-              data-testid={`chip-${label}`}
-              disabled={!bootDone}
-              onClick={() => { processCommand(label); focusInput(); }}
+          <div style={{ padding: '16px 24px 32px' }}>
+            {/* Handle + close row */}
+            <div
               style={{
-                backgroundColor: bg,
-                border: 'none',
-                color: text,
-                padding: '9px 22px',
-                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                fontWeight: 700,
-                fontSize: '13px',
-                cursor: bootDone ? 'pointer' : 'not-allowed',
-                borderRadius: '8px',
-                opacity: bootDone ? 1 : 0.4,
-                transition: 'all 0.2s ease',
-                boxShadow: bootDone ? `0 2px 10px ${shadow}` : 'none',
-                letterSpacing: '0.02em',
-              }}
-              onMouseEnter={e => {
-                if (!bootDone) return;
-                e.currentTarget.style.transform = 'scale(1.05)';
-                e.currentTarget.style.boxShadow = `0 8px 24px ${shadow}`;
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.boxShadow = bootDone ? `0 2px 10px ${shadow}` : 'none';
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '20px',
               }}
             >
-              {label}
-            </button>
-          ))}
+              <div
+                style={{
+                  width: '32px',
+                  height: '3px',
+                  backgroundColor: '#E0E0E0',
+                  borderRadius: '2px',
+                }}
+              />
+              <button
+                data-testid="drawer-close"
+                onClick={e => { e.stopPropagation(); setActiveCard(null); }}
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#999999',
+                  fontSize: '14px',
+                  padding: '4px 8px',
+                  lineHeight: 1,
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <VisualizerCard
+              key={`mobile-${activeCard}`}
+              card={VISUALIZER_CARDS[activeCard]}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ── Footer ── */}
       <div
@@ -425,6 +555,8 @@ export default function Terminal() {
           right: 0,
           padding: '12px 24px',
           fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+          backgroundColor: '#FFFFFF',
+          borderTop: '1px solid #F5F5F5',
         }}
         onClick={e => e.stopPropagation()}
       >
