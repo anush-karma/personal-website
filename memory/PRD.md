@@ -107,9 +107,19 @@ Build a React-based Terminal Emulator component for a personal portfolio. The te
 - [x] fadeSlideUp + drawerSlideUp keyframes added to index.css
 - [x] Testing: 100% pass rate (30/30 tests via Playwright — desktop + mobile)
 
----
+### Sprint 5 -- Career Directory Tree (Feb 2026)
+- [x] CareerTree.jsx: interactive file tree replaces static log card
+- [x] 5 folders: signoz/ (Sole Marketer), thrivestack/ (PMM), lemiride/ (Founder), surrey_uni/ (MSc), pratham/ (Commit 0)
+- [x] Tree branch chars: Unicode 251C (├──) for non-last, 2514 (└──) for last
+- [x] Accordion: one folder open at a time, toggle collapse on re-click
+- [x] signoz/ detail: 5 sections (The Mascot + olly.png, Growth, Product, Ops, Hiring)
+- [x] thrivestack/: Authority + Research; lemiride/: Product + Exit; surrey_uni/: Degree; pratham/: Init
+- [x] Label style: uppercase JetBrains Mono in yellow (#FFD632); body: Lora serif #1A1A1A
+- [x] Mobile: CareerTree renders inside the slide-up drawer with scroll-on-expand behavior
+- [x] No em dashes in any content; whoami/status cards unchanged from Sprint 4
+- [x] Testing: 100% pass rate (26/26 tests -- desktop + mobile)
 
-## Backlog / Future Enhancements
+---
 ### P0 — None (all sprints complete)
 ### P1 — Nice to Have
 - Upload actual `olly.png` and `dogs.png` to `/public/` to replace image placeholders
