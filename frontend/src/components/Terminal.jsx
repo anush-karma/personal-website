@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import VisualizerCard from './VisualizerCard';
+import CareerTree from './CareerTree';
 import { VISUALIZER_CARDS } from '../VisualizerContent';
 
 // ─── Command Dictionary ───────────────────────────────────────────────────────
@@ -477,7 +478,9 @@ export default function Terminal() {
             overflowY: 'auto',
           }}
         >
-          {activeCard ? (
+          {activeCard === 'log' ? (
+            <CareerTree key="log-tree" />
+          ) : activeCard ? (
             <VisualizerCard key={activeCard} card={VISUALIZER_CARDS[activeCard]} />
           ) : (
             <VisualizerPlaceholder />
@@ -537,11 +540,15 @@ export default function Terminal() {
               </button>
             </div>
 
-            <VisualizerCard
-              key={`mobile-${activeCard}`}
-              card={VISUALIZER_CARDS[activeCard]}
-              testIdSuffix="-mobile"
-            />
+            {activeCard === 'log' ? (
+              <CareerTree key="log-tree-mobile" testIdSuffix="-mobile" />
+            ) : (
+              <VisualizerCard
+                key={`mobile-${activeCard}`}
+                card={VISUALIZER_CARDS[activeCard]}
+                testIdSuffix="-mobile"
+              />
+            )}
           </div>
         </div>
       )}

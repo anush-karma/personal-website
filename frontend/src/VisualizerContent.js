@@ -21,43 +21,7 @@ export const VISUALIZER_CARDS = {
     ],
   },
 
-  log: {
-    id: 'log',
-    title: 'log',
-    borderColor: '#FFD632',
-    sections: [
-      {
-        type: 'company',
-        content: 'SigNoz [v1.8]',
-      },
-      {
-        type: 'subtitle',
-        content:
-          'First marketing hire and sole marketer for an OTel-native observability platform.',
-      },
-      {
-        type: 'image',
-        src: '/olly.png',
-        label: 'Olly',
-      },
-      {
-        type: 'bullets',
-        items: [
-          'Conceived and launched Olly, the Arctic Bear mascot, at KubeCon North America to humanize the infrastructure stack.',
-          'Built the GTM engine for the Datadog Migration Tool, including technical landing pages and personal outreach for 500+ customers.',
-          'Founded the Community Advocate Program and managed the merch fulfillment logic from scratch.',
-          'Engineered a 2x conversion lift on core feature pages through messaging audits and Clarity tracking.',
-          'Designed and managed the hiring process for the marketing team, including DevRel and Brand/Community roles.',
-          'Handled international logistics and shipping crises for KubeCon and SRECon.',
-        ],
-      },
-      {
-        type: 'past',
-        content:
-          'Past: ThriveStack [v1.5] (Scaled DR 23 to 56 in 8 days); LeMiRide [v1.0] (Founder/Product, navigated to acquisition).',
-      },
-    ],
-  },
+  // log is now rendered as an interactive CareerTree component (see CareerTree.jsx)
 
   status: {
     id: 'status',
