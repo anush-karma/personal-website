@@ -55,9 +55,11 @@ Build a React-based Terminal Emulator component for a personal portfolio. The te
 
 ---
 
-## What's Been Implemented (Feb 2026)
+## What's Been Implemented
+
+### Sprint 1 — MVP (Feb 2026)
 - [x] Full terminal UI with dark theme and JetBrains Mono
-- [x] All 5 commands with exact outputs from spec
+- [x] All 5 commands with exact outputs from spec (help, whoami, status, log, clear)
 - [x] TypewriterText component (20ms/char, character-by-character)
 - [x] Purple highlight for `[vX.X]` tags in log output
 - [x] Blinking block cursor in `#7F7AFF`
@@ -67,7 +69,15 @@ Build a React-based Terminal Emulator component for a personal portfolio. The te
 - [x] Scroll anchor for smooth auto-scroll
 - [x] Custom scrollbar styled to match theme
 - [x] Boot message: "The Kernel — v1.8.0"
-- [x] Testing: 95% pass rate via Playwright automation
+
+### Sprint 2 — Boot Sequence + Hot Chips (Feb 2026)
+- [x] Boot sequence: 4 lines printed sequentially on mount via chain-callback TypewriterText
+- [x] `[v1.8]` in boot line 1 auto-highlighted purple by existing regex
+- [x] Input + Hot Chips disabled (`opacity: 0.35`, `cursor: not-allowed`) during boot
+- [x] Input + cursor visually dim during boot, re-activate on `bootDone`
+- [x] Hot Chips: 3 buttons below terminal — `[whoami]` purple, `[log]` yellow, `[status]` pink
+- [x] Chips call `processCommand` directly, same as keyboard — no duplicate logic
+- [x] Testing: 100% pass rate (17/17 tests) via Playwright automation
 
 ---
 
