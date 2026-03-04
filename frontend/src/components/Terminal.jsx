@@ -55,7 +55,7 @@ function TypewriterText({ text, speed, onScrollRequest, onComplete, showCursor }
   return (
     <div
       data-testid="response-block"
-      style={{ color: '#E0E0E0', whiteSpace: 'pre-wrap', lineHeight: '1.7' }}
+      style={{ color: '#FFFFFF', whiteSpace: 'pre-wrap', lineHeight: '1.7' }}
     >
       {displayed.split('\n').map((line, i, arr) => {
         const isLast = i === arr.length - 1;
@@ -205,35 +205,43 @@ export default function Terminal() {
   return (
     <div
       onClick={focusInput}
-      style={{ backgroundColor: '#0D0D0D', minHeight: '100vh' }}
-      className="flex flex-col items-center justify-center p-4 sm:p-8 font-mono gap-4"
+      style={{ backgroundColor: '#FFFFFF', height: '100vh', overflow: 'hidden' }}
+      className="flex items-center justify-center"
     >
-      {/* ── Terminal Window ── */}
+      {/* Content column: terminal + chips, vertically centered */}
       <div
-        data-testid="terminal-window"
-        className="w-full max-w-4xl rounded-lg overflow-hidden flex flex-col"
-        style={{ height: '80vh', border: '1px solid #333333' }}
+        className="flex flex-col w-full"
+        style={{ maxWidth: '850px', padding: '20px 16px 80px', height: '100%', gap: '32px' }}
       >
+        {/* ── Terminal Window ── */}
+        <div
+          data-testid="terminal-window"
+          className="rounded-lg overflow-hidden flex flex-col"
+          style={{
+            flex: 1,
+            minHeight: '500px',
+            backgroundColor: '#0D0D0D',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.1)',
+          }}
+        >
         {/* Title Bar */}
         <div
-          className="flex items-center gap-2 px-4 py-3 shrink-0 select-none"
-          style={{ backgroundColor: '#111111', borderBottom: '1px solid #333333' }}
+          className="relative flex items-center px-4 py-3 shrink-0 select-none"
+          style={{ backgroundColor: '#1A1A1A', borderBottom: '1px solid #2a2a2a' }}
         >
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ backgroundColor: '#3a3a3a' }}
-          />
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ backgroundColor: '#3a3a3a' }}
-          />
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ backgroundColor: '#3a3a3a' }}
-          />
-          <span className="ml-4 text-xs" style={{ color: '#555555' }}>
-            guest@anushka-portfolio:~
-          </span>
+          {/* Stoplight dots */}
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FF5F56' }} />
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFBD2E' }} />
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#27C93F' }} />
+          </div>
+          {/* Centered title */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span style={{ fontSize: '12px', color: '#666666', fontFamily: 'Inter, system-ui, -apple-system, sans-serif', letterSpacing: '0.04em' }}>
+              anushka-karmakar — zsh
+            </span>
+          </div>
         </div>
 
         {/* Output Area */}
@@ -250,10 +258,10 @@ export default function Terminal() {
             <p style={{ color: '#888888', marginTop: '2px' }}>
               Anushka Karmakar's Portfolio Terminal
             </p>
-            <p style={{ color: '#222222', marginTop: '6px', letterSpacing: '0.05em' }}>
+            <p style={{ color: '#333333', marginTop: '6px', letterSpacing: '0.05em' }}>
               {'─'.repeat(54)}
             </p>
-            <p style={{ color: '#555555', marginTop: '6px' }}>
+            <p style={{ color: '#666666', marginTop: '6px' }}>
               Type{' '}
               <span style={{ color: '#7F7AFF' }}>'help'</span>
               {' '}to get started.
@@ -276,7 +284,7 @@ export default function Terminal() {
                 </span>
                 <span
                   data-testid="command-entry"
-                  style={{ color: '#E0E0E0' }}
+                  style={{ color: '#FFFFFF' }}
                 >
                   {item.text}
                 </span>
@@ -319,7 +327,7 @@ export default function Terminal() {
 
           {/* Visible text + cursor display */}
           <div className="relative flex-1 flex items-center text-sm">
-            <span style={{ color: '#E0E0E0' }}>{input}</span>
+            <span style={{ color: '#FFFFFF' }}>{input}</span>
             <span
               data-testid="terminal-cursor"
               className="animate-blink inline-block"
@@ -359,46 +367,73 @@ export default function Terminal() {
       </div>
 
       {/* ── Hot Chips ── */}
+        <div
+          data-testid="hot-chips"
+          className="flex items-center shrink-0"
+          style={{ gap: '12px' }}
+          onClick={e => e.stopPropagation()}
+        >
+          {[
+            { label: 'whoami', bg: '#7F7AFF', text: '#FFFFFF', shadow: 'rgba(127,122,255,0.35)' },
+            { label: 'log',    bg: '#FFD632', text: '#111111', shadow: 'rgba(255,214,50,0.4)'   },
+            { label: 'status', bg: '#F379AC', text: '#FFFFFF', shadow: 'rgba(243,121,172,0.35)' },
+          ].map(({ label, bg, text, shadow }) => (
+            <button
+              key={label}
+              data-testid={`chip-${label}`}
+              disabled={!bootDone}
+              onClick={() => { processCommand(label); focusInput(); }}
+              style={{
+                backgroundColor: bg,
+                border: 'none',
+                color: text,
+                padding: '9px 22px',
+                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                fontWeight: 700,
+                fontSize: '13px',
+                cursor: bootDone ? 'pointer' : 'not-allowed',
+                borderRadius: '8px',
+                opacity: bootDone ? 1 : 0.4,
+                transition: 'all 0.2s ease',
+                boxShadow: bootDone ? `0 2px 10px ${shadow}` : 'none',
+                letterSpacing: '0.02em',
+              }}
+              onMouseEnter={e => {
+                if (!bootDone) return;
+                e.currentTarget.style.transform = 'scale(1.05)';
+                e.currentTarget.style.boxShadow = `0 8px 24px ${shadow}`;
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = bootDone ? `0 2px 10px ${shadow}` : 'none';
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Footer ── */}
       <div
-        data-testid="hot-chips"
-        className="flex items-center gap-3 w-full max-w-4xl"
+        data-testid="footer"
+        className="flex justify-between items-center"
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: '12px 24px',
+          fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+        }}
         onClick={e => e.stopPropagation()}
       >
-        {[
-          { label: 'whoami', color: '#7F7AFF' },
-          { label: 'log',    color: '#FFD632' },
-          { label: 'status', color: '#F379AC' },
-        ].map(({ label, color }) => (
-          <button
-            key={label}
-            data-testid={`chip-${label}`}
-            disabled={!bootDone}
-            onClick={() => {
-              processCommand(label);
-              focusInput();
-            }}
-            style={{
-              backgroundColor: 'transparent',
-              border: `1px solid ${color}`,
-              color: color,
-              padding: '6px 18px',
-              fontFamily: 'inherit',
-              fontSize: '13px',
-              cursor: bootDone ? 'pointer' : 'not-allowed',
-              borderRadius: '4px',
-              opacity: bootDone ? 1 : 0.35,
-              transition: 'background-color 150ms ease, opacity 150ms ease',
-            }}
-            onMouseEnter={e => {
-              if (bootDone) e.currentTarget.style.backgroundColor = `${color}18`;
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
-          >
-            [{label}]
-          </button>
-        ))}
+        <span style={{ fontSize: '12px', color: '#999999' }}>
+          System: v1.8 | Deep Tech &amp; DevTools
+        </span>
+        <span style={{ fontSize: '12px', color: '#999999' }}>
+          LinkedIn: /in/anushkakarmakar
+        </span>
       </div>
     </div>
   );
