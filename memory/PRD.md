@@ -114,23 +114,33 @@ Build a React-based Terminal Emulator component for a personal portfolio. The te
 - [x] Accordion: one folder open at a time, toggle collapse on re-click
 - [x] signoz/ detail: 5 sections (The Mascot + olly.png, Growth, Product, Ops, Hiring)
 - [x] thrivestack/: Authority + Research; lemiride/: Product + Exit; surrey_uni/: Degree; pratham/: Init
-- [x] Label style: uppercase JetBrains Mono in yellow (#FFD632); body: Lora serif #1A1A1A
 - [x] Mobile: CareerTree renders inside the slide-up drawer with scroll-on-expand behavior
 - [x] No em dashes in any content; whoami/status cards unchanged from Sprint 4
 - [x] Testing: 100% pass rate (26/26 tests -- desktop + mobile)
 
----
-### P0 — None (all sprints complete)
-### P1 — Nice to Have
-- Upload actual `olly.png` and `dogs.png` to `/public/` to replace image placeholders
-- `contact` command with clickable email/LinkedIn links
-- `projects` command with portfolio links
-- Paste support for terminal input
-- Mobile keyboard improvements
-- ASCII art header for boot message
+### Sprint 6 -- Final Polish and Launch (Feb 2026)
+- [x] Pastel Hot Chips: whoami=#E6E4FF lavender, log=#FFF9E0 butter, status=#FFE4E9 blush; dark gray #333333 text; 0.5s transition; scale+lift on hover
+- [x] Notebook right pane: repeating-linear-gradient #F1F1F1 every 26px on right pane and mobile drawer
+- [x] All right-pane text: Lora serif, 26px line-height
+- [x] Terminal vault: box-shadow 0 40px 100px rgba(0,0,0,0.07), border 1px solid rgba(0,0,0,0.05)
+- [x] Footer: "Product Marketing Manager | SigNoz [v1.8]" left; clickable LinkedIn link right (lavender hover)
+- [x] Global auto-focus: clicking anywhere focuses terminal input
+- [x] signoz/ tree: updated 5 entries (Mascot/GTM/Growth/Hiring/Ops), no em dashes
+- [x] whoami card: border #E6E4FF, accentColor #6B68C8; status: border #FFE4E9, accentColor #C06080
+- [x] Testing: 100% pass rate (23/23 tests -- desktop + mobile)
 
-### P2 — Future
-- Tab completion for command names
-- `socials` command
-- Subtle CRT scanline overlay (optional)
+---
+
+### Backlog
+#### P1 -- Nice to Have
+- contact command with clickable email + LinkedIn card in the Visualizer
+- projects command with portfolio links
+- Mobile keyboard UX improvements
+- Tab completion for commands
+- surrey_uni/ and pratham/ folders: add more detail entries
+
+#### P2 -- Future
+- ASCII art header for boot message
+- Subtle CRT scanline overlay
+- Share terminal session link
 - Share terminal session link
