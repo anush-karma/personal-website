@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// ─── Shared styles ────────────────────────────────────────────────────────────
+// ─── Shared typography ────────────────────────────────────────────────────────
 
 const LORA = "'Lora', Georgia, serif";
 
@@ -48,8 +48,10 @@ function ImageWithFallback({ src, label }) {
 }
 
 // ─── Section renderers ────────────────────────────────────────────────────────
+// borderColor: left border (pastel)
+// accentColor: readable header text
 
-function renderSection(section, borderColor, idx) {
+function renderSection(section, borderColor, accentColor, idx) {
   switch (section.type) {
 
     case 'header':
@@ -58,12 +60,12 @@ function renderSection(section, borderColor, idx) {
           key={idx}
           style={{
             fontFamily: LORA,
-            fontSize: '10px',
-            color: borderColor,
-            textTransform: 'uppercase',
-            letterSpacing: '0.16em',
-            fontWeight: 600,
-            marginBottom: '14px',
+            fontSize: '13px',
+            color: accentColor || '#888888',
+            letterSpacing: '0.04em',
+            fontWeight: 700,
+            marginBottom: '16px',
+            lineHeight: '26px',
           }}
         >
           {section.content}
@@ -76,10 +78,10 @@ function renderSection(section, borderColor, idx) {
           key={idx}
           style={{
             fontFamily: LORA,
-            fontSize: '14px',
+            fontSize: '13px',
             color: '#1A1A1A',
-            lineHeight: '1.85',
-            marginBottom: '18px',
+            lineHeight: '26px',
+            marginBottom: '20px',
           }}
         >
           {section.content}
@@ -96,6 +98,7 @@ function renderSection(section, borderColor, idx) {
             fontWeight: 700,
             color: '#1A1A1A',
             letterSpacing: '-0.01em',
+            lineHeight: '26px',
             marginBottom: '6px',
           }}
         >
@@ -112,7 +115,7 @@ function renderSection(section, borderColor, idx) {
             fontSize: '13px',
             color: '#666666',
             fontStyle: 'italic',
-            lineHeight: '1.7',
+            lineHeight: '26px',
             marginBottom: '16px',
           }}
         >
@@ -140,19 +143,18 @@ function renderSection(section, borderColor, idx) {
                 display: 'flex',
                 gap: '10px',
                 alignItems: 'flex-start',
-                marginBottom: '9px',
+                marginBottom: '2px',
               }}
             >
               <span
                 style={{
                   color: borderColor,
                   flexShrink: 0,
-                  marginTop: '5px',
+                  marginTop: '8px',
                   fontSize: '7px',
                   lineHeight: 1,
                 }}
               >
-                {/* dot bullet */}
                 &#9679;
               </span>
               <p
@@ -160,7 +162,7 @@ function renderSection(section, borderColor, idx) {
                   fontFamily: LORA,
                   fontSize: '13px',
                   color: '#1A1A1A',
-                  lineHeight: '1.72',
+                  lineHeight: '26px',
                   margin: 0,
                 }}
               >
@@ -179,7 +181,7 @@ function renderSection(section, borderColor, idx) {
             fontFamily: LORA,
             fontSize: '12px',
             color: '#888888',
-            lineHeight: '1.65',
+            lineHeight: '26px',
             paddingTop: '12px',
             borderTop: '1px solid #EBEBEB',
             marginBottom: '4px',
@@ -198,7 +200,7 @@ function renderSection(section, borderColor, idx) {
             fontSize: '12px',
             color: '#888888',
             fontStyle: 'italic',
-            lineHeight: '1.65',
+            lineHeight: '26px',
             paddingTop: '14px',
             borderTop: '1px solid #EBEBEB',
           }}
@@ -227,17 +229,17 @@ export default function VisualizerCard({ card, testIdSuffix = '' }) {
         maxHeight: '100%',
       }}
     >
-      {/* Card label */}
+      {/* Card label — always muted gray, never the pastel (would be invisible) */}
       <p
         style={{
-          fontFamily: LORA,
+          fontFamily: "'JetBrains Mono', monospace",
           fontSize: '9px',
-          color: card.borderColor,
+          color: '#AAAAAA',
           textTransform: 'uppercase',
           letterSpacing: '0.18em',
           fontWeight: 600,
           marginBottom: '18px',
-          opacity: 0.7,
+          lineHeight: '26px',
         }}
       >
         {card.title}
@@ -245,7 +247,7 @@ export default function VisualizerCard({ card, testIdSuffix = '' }) {
 
       {/* Sections */}
       {card.sections.map((section, idx) =>
-        renderSection(section, card.borderColor, idx)
+        renderSection(section, card.borderColor, card.accentColor, idx)
       )}
     </div>
   );

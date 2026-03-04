@@ -1,13 +1,14 @@
 // ─── Visualizer Card Data ─────────────────────────────────────────────────────
-// Section types: header | body | company | subtitle | image | bullets | past | footer
-// No em dashes. Images served from /public/.
+// borderColor: used for the left-border accent line (pastel)
+// accentColor: used for header text (readable, darker version of the pastel)
 
 export const VISUALIZER_CARDS = {
 
   whoami: {
     id: 'whoami',
     title: 'whoami',
-    borderColor: '#7F7AFF',
+    borderColor: '#E6E4FF',
+    accentColor: '#6B68C8',
     sections: [
       {
         type: 'header',
@@ -26,7 +27,8 @@ export const VISUALIZER_CARDS = {
   status: {
     id: 'status',
     title: 'status',
-    borderColor: '#F379AC',
+    borderColor: '#FFE4E9',
+    accentColor: '#C06080',
     sections: [
       {
         type: 'body',

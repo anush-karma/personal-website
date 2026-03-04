@@ -2,7 +2,18 @@ import React, { useState, useRef } from 'react';
 
 const MONO = "'JetBrains Mono', 'Fira Code', monospace";
 const LORA = "'Lora', Georgia, serif";
-const YELLOW = '#FFD632';
+
+// ─── Pastel-aligned palette ───────────────────────────────────────────────────
+// Tree structure uses muted neutrals to match the notebook aesthetic.
+// #FFF9E0 (butter pastel) is used only for the left-border accent on expanded blocks.
+
+const ROOT_COLOR   = '#333333';   // root label text
+const BRANCH_COLOR = '#CCCCCC';   // ├── └── chars
+const FOLDER_COLOR = '#444444';   // inactive folder names
+const ACTIVE_COLOR = '#111111';   // active folder name (bold)
+const BORDER_COLOR = '#FFF9E0';   // detail block left border (butter pastel)
+const LABEL_COLOR  = '#999999';   // entry section labels (uppercase Mono)
+const BODY_COLOR   = '#1A1A1A';   // Lora body text
 
 // ─── Tree Data ────────────────────────────────────────────────────────────────
 
@@ -17,34 +28,29 @@ const FOLDERS = [
     details: [
       {
         id: 'mascot',
-        label: 'The Mascot',
-        content:
-          'Conceived and launched Olly, the Arctic Bear, at KubeCon North America. The brief was to humanize the infrastructure stack for developers who distrust marketing.',
+        label: 'Mascot',
+        content: "Designed and launched 'Olly' (Arctic Bear) at KubeCon NA.",
         image: { src: '/olly.png', label: 'Olly' },
+      },
+      {
+        id: 'gtm',
+        label: 'GTM',
+        content: 'Engineered the Datadog Migration Tool launch across 9+ technical pages.',
       },
       {
         id: 'growth',
         label: 'Growth',
-        content:
-          'Engineered a 2x conversion lift on core feature pages through messaging audits and Clarity heatmap tracking.',
-      },
-      {
-        id: 'product',
-        label: 'Product',
-        content:
-          'Built the GTM engine for the Datadog Migration Tool. Technical landing pages and personal outreach to 500+ migration candidates.',
-      },
-      {
-        id: 'ops',
-        label: 'Ops',
-        content:
-          'Managed international logistics and resolved shipping crises for KubeCon North America and SRECon.',
+        content: 'Delivered 2x conversion lift on core feature pages via messaging audits.',
       },
       {
         id: 'hiring',
         label: 'Hiring',
-        content:
-          'Designed the job architecture and ran the 3-step interview process for DevRel and Brand/Community hires.',
+        content: 'Designed the 3-step evaluation process for Brand and DevRel hires.',
+      },
+      {
+        id: 'ops',
+        label: 'Ops',
+        content: 'Resolved US/International shipping crises for SRECon and KubeCon.',
       },
     ],
   },
@@ -188,7 +194,7 @@ function FolderRow({ folder, isOpen, onToggle, detailRef, idSuffix }) {
           style={{
             fontFamily: MONO,
             fontSize: '13px',
-            color: YELLOW,
+            color: BRANCH_COLOR,
             flexShrink: 0,
             letterSpacing: '-0.04em',
             userSelect: 'none',
@@ -202,7 +208,7 @@ function FolderRow({ folder, isOpen, onToggle, detailRef, idSuffix }) {
           style={{
             fontFamily: MONO,
             fontSize: '13px',
-            color: isOpen ? YELLOW : '#1A1A1A',
+            color: isOpen ? ACTIVE_COLOR : FOLDER_COLOR,
             fontWeight: isOpen ? 600 : 400,
             transition: 'color 0.15s ease',
           }}
@@ -215,7 +221,7 @@ function FolderRow({ folder, isOpen, onToggle, detailRef, idSuffix }) {
           style={{
             fontFamily: MONO,
             fontSize: '11px',
-            color: '#AAAAAA',
+            color: '#BBBBBB',
             flexShrink: 0,
           }}
         >
@@ -232,7 +238,7 @@ function FolderRow({ folder, isOpen, onToggle, detailRef, idSuffix }) {
             paddingLeft: '24px',
             paddingTop: '12px',
             paddingBottom: '6px',
-            borderLeft: `2px solid ${YELLOW}`,
+            borderLeft: `2px solid ${BORDER_COLOR}`,
             marginLeft: '5px',
             marginBottom: '2px',
             animation: 'fadeSlideUp 0.25s ease-out both',
@@ -242,18 +248,19 @@ function FolderRow({ folder, isOpen, onToggle, detailRef, idSuffix }) {
             <div
               key={detail.id}
               data-testid={`tree-entry${idSuffix}-${folder.id}-${detail.id}`}
-              style={{ marginBottom: '16px' }}
+              style={{ marginBottom: '18px' }}
             >
               {/* Entry label */}
               <p
                 style={{
                   fontFamily: MONO,
-                  fontSize: '10px',
-                  color: YELLOW,
-                  letterSpacing: '0.10em',
+                  fontSize: '9px',
+                  color: LABEL_COLOR,
+                  letterSpacing: '0.14em',
                   textTransform: 'uppercase',
                   fontWeight: 600,
-                  marginBottom: '5px',
+                  marginBottom: '4px',
+                  lineHeight: '16px',
                 }}
               >
                 {detail.label}
@@ -264,8 +271,8 @@ function FolderRow({ folder, isOpen, onToggle, detailRef, idSuffix }) {
                 style={{
                   fontFamily: LORA,
                   fontSize: '13px',
-                  color: '#1A1A1A',
-                  lineHeight: '1.75',
+                  color: BODY_COLOR,
+                  lineHeight: '26px',
                   margin: 0,
                 }}
               >
@@ -294,7 +301,6 @@ export default function CareerTree({ testIdSuffix = '' }) {
     const next = openFolder === id ? null : id;
     setOpenFolder(next);
     if (next) {
-      // After the accordion animates open, scroll it into view (critical for mobile drawer)
       setTimeout(() => {
         detailRefs.current[next]?.scrollIntoView({
           behavior: 'smooth',
@@ -316,11 +322,12 @@ export default function CareerTree({ testIdSuffix = '' }) {
       <p
         style={{
           fontFamily: MONO,
-          fontSize: '13px',
-          color: YELLOW,
+          fontSize: '12px',
+          color: ROOT_COLOR,
           fontWeight: 700,
           letterSpacing: '-0.01em',
           marginBottom: '8px',
+          lineHeight: '26px',
         }}
       >
         {TREE_ROOT}

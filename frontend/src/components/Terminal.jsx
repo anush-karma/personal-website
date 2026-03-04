@@ -251,6 +251,7 @@ export default function Terminal() {
 
   return (
     <div
+      onClick={focusInput}
       style={{
         backgroundColor: '#FFFFFF',
         height: '100vh',
@@ -263,7 +264,6 @@ export default function Terminal() {
 
         {/* ── Left Pane: Terminal + Hot Chips ── */}
         <div
-          onClick={focusInput}
           className="flex flex-col w-full lg:w-3/5"
           style={{ padding: '20px 16px 80px', gap: '32px', height: '100%', minWidth: 0 }}
         >
@@ -276,8 +276,8 @@ export default function Terminal() {
               flex: 1,
               minHeight: '500px',
               backgroundColor: '#0D0D0D',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
-              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.1)',
+              border: '1px solid rgba(0,0,0,0.05)',
+              boxShadow: '0 40px 100px rgba(0,0,0,0.07)',
             }}
           >
             {/* Title Bar */}
@@ -428,9 +428,9 @@ export default function Terminal() {
             onClick={e => e.stopPropagation()}
           >
             {[
-              { label: 'whoami', bg: '#7F7AFF', text: '#FFFFFF', shadow: 'rgba(127,122,255,0.35)' },
-              { label: 'log',    bg: '#FFD632', text: '#111111', shadow: 'rgba(255,214,50,0.4)'   },
-              { label: 'status', bg: '#F379AC', text: '#FFFFFF', shadow: 'rgba(243,121,172,0.35)' },
+              { label: 'whoami', bg: '#E6E4FF', text: '#333333', shadow: 'rgba(230,228,255,0.9)' },
+              { label: 'log',    bg: '#FFF9E0', text: '#333333', shadow: 'rgba(255,249,224,1.0)' },
+              { label: 'status', bg: '#FFE4E9', text: '#333333', shadow: 'rgba(255,228,233,0.9)' },
             ].map(({ label, bg, text, shadow }) => (
               <button
                 key={label}
@@ -448,18 +448,18 @@ export default function Terminal() {
                   cursor: bootDone ? 'pointer' : 'not-allowed',
                   borderRadius: '8px',
                   opacity: bootDone ? 1 : 0.4,
-                  transition: 'all 0.2s ease',
-                  boxShadow: bootDone ? `0 2px 10px ${shadow}` : 'none',
+                  transition: 'all 0.5s ease',
+                  boxShadow: bootDone ? `0 2px 12px ${shadow}` : 'none',
                   letterSpacing: '0.02em',
                 }}
                 onMouseEnter={e => {
                   if (!bootDone) return;
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow = `0 8px 24px ${shadow}`;
+                  e.currentTarget.style.transform = 'scale(1.04) translateY(-2px)';
+                  e.currentTarget.style.boxShadow = `0 10px 28px ${shadow}`;
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = bootDone ? `0 2px 10px ${shadow}` : 'none';
+                  e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                  e.currentTarget.style.boxShadow = bootDone ? `0 2px 12px ${shadow}` : 'none';
                 }}
               >
                 {label}
@@ -476,6 +476,7 @@ export default function Terminal() {
             padding: '48px 40px 80px 40px',
             borderLeft: '1px solid #F0F0F0',
             overflowY: 'auto',
+            backgroundImage: 'repeating-linear-gradient(transparent, transparent 25px, #F1F1F1 25px, #F1F1F1 26px)',
           }}
         >
           {activeCard === 'log' ? (
@@ -500,6 +501,7 @@ export default function Terminal() {
             maxHeight: '60vh',
             overflow: 'auto',
             animation: 'drawerSlideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1) both',
+            backgroundImage: 'repeating-linear-gradient(transparent, transparent 25px, #F1F1F1 25px, #F1F1F1 26px)',
           }}
         >
           <div style={{ padding: '16px 24px 32px' }}>
@@ -570,11 +572,25 @@ export default function Terminal() {
         onClick={e => e.stopPropagation()}
       >
         <span style={{ fontSize: '12px', color: '#999999' }}>
-          System: v1.8 | Deep Tech &amp; DevTools
+          Product Marketing Manager | SigNoz [v1.8]
         </span>
-        <span style={{ fontSize: '12px', color: '#999999' }}>
-          LinkedIn: /in/anushkakarmakar
-        </span>
+        <a
+          href="https://linkedin.com/in/anushkakarmakar/"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-testid="footer-linkedin-link"
+          style={{
+            fontSize: '12px',
+            color: '#999999',
+            textDecoration: 'none',
+            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+            transition: 'color 0.2s ease',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#9B97E8'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#999999'; }}
+        >
+          linkedin.com/in/anushkakarmakar
+        </a>
       </div>
     </div>
   );
