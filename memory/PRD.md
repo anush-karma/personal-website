@@ -70,7 +70,15 @@ Build a React-based Terminal Emulator component for a personal portfolio. The te
 - [x] Custom scrollbar styled to match theme
 - [x] Boot message: "The Kernel — v1.8.0"
 
-### Sprint 2 — Boot Sequence + Hot Chips (Feb 2026)
+## Sprint 3 — High-Fidelity Interface (Feb 2026)
+- [x] White canvas (#FFFFFF) — page bg, html/body/#root all aligned
+- [x] Terminal vault: max-width 850px, flex:1 height, min-height 500px, box-shadow 0 20px 50px rgba(0,0,0,0.1)
+- [x] Header: #1A1A1A bg, real stoplight dots (#FF5F56/#FFBD2E/#27C93F), "anushka-karmakar — zsh" absolutely centered
+- [x] Hot Chips redesigned: solid color backgrounds, 8px border-radius, bold Inter sans-serif, hover scale(1.05) + deeper shadow with transition: all 0.2s ease
+- [x] Footer: fixed bottom, 12px #999999 Inter — "System: v1.8 | Deep Tech & DevTools" left, "LinkedIn: /in/anushkakarmakar" right
+- [x] Terminal content text upgraded from #E0E0E0 → #FFFFFF throughout
+- [x] All prior sprints (boot sequence, sequential typing, inline cursor) preserved
+- [x] Testing: 100% pass rate (19/19 visual + functional tests via Playwright)
 - [x] Boot sequence: 4 lines printed sequentially on mount via chain-callback TypewriterText
 - [x] `[v1.8]` in boot line 1 auto-highlighted purple by existing regex
 - [x] Input + Hot Chips disabled (`opacity: 0.35`, `cursor: not-allowed`) during boot
