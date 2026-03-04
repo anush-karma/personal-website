@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
-// ─── Shared typography ────────────────────────────────────────────────────────
+// ─── Typography ───────────────────────────────────────────────────────────────
 
-const LORA = "'Lora', Georgia, serif";
+const INTER = "Inter, system-ui, -apple-system, sans-serif";
+const LORA  = "'Lora', Georgia, serif";
+const MONO  = "'JetBrains Mono', monospace";
 
 // ─── Image with [Visual Artifact: Name] fallback ─────────────────────────────
 
@@ -23,7 +25,7 @@ function ImageWithFallback({ src, label }) {
           alignItems: 'center',
           justifyContent: 'center',
           color: '#BBBBBB',
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: MONO,
           fontSize: '11px',
           letterSpacing: '0.06em',
         }}
@@ -38,18 +40,12 @@ function ImageWithFallback({ src, label }) {
       src={src}
       alt={label}
       onError={() => setFailed(true)}
-      style={{
-        display: 'block',
-        maxWidth: '60%',
-        margin: '0 auto',
-      }}
+      style={{ display: 'block', maxWidth: '60%', margin: '0 auto' }}
     />
   );
 }
 
 // ─── Section renderers ────────────────────────────────────────────────────────
-// borderColor: left border (pastel)
-// accentColor: readable header text
 
 function renderSection(section, borderColor, accentColor, idx) {
   switch (section.type) {
@@ -59,13 +55,13 @@ function renderSection(section, borderColor, accentColor, idx) {
         <p
           key={idx}
           style={{
-            fontFamily: LORA,
-            fontSize: '13px',
-            color: accentColor || '#888888',
-            letterSpacing: '0.04em',
+            fontFamily: INTER,
+            fontSize: '14px',
             fontWeight: 700,
-            marginBottom: '16px',
-            lineHeight: '26px',
+            color: accentColor || '#888888',
+            letterSpacing: '-0.01em',
+            marginBottom: '14px',
+            lineHeight: 1.4,
           }}
         >
           {section.content}
@@ -80,7 +76,7 @@ function renderSection(section, borderColor, accentColor, idx) {
             fontFamily: LORA,
             fontSize: '13px',
             color: '#1A1A1A',
-            lineHeight: '26px',
+            lineHeight: 1.6,
             marginBottom: '20px',
           }}
         >
@@ -93,12 +89,12 @@ function renderSection(section, borderColor, accentColor, idx) {
         <p
           key={idx}
           style={{
-            fontFamily: LORA,
+            fontFamily: INTER,
             fontSize: '15px',
             fontWeight: 700,
             color: '#1A1A1A',
-            letterSpacing: '-0.01em',
-            lineHeight: '26px',
+            letterSpacing: '-0.02em',
+            lineHeight: 1.4,
             marginBottom: '6px',
           }}
         >
@@ -115,7 +111,7 @@ function renderSection(section, borderColor, accentColor, idx) {
             fontSize: '13px',
             color: '#666666',
             fontStyle: 'italic',
-            lineHeight: '26px',
+            lineHeight: 1.6,
             marginBottom: '16px',
           }}
         >
@@ -143,15 +139,15 @@ function renderSection(section, borderColor, accentColor, idx) {
                 display: 'flex',
                 gap: '10px',
                 alignItems: 'flex-start',
-                marginBottom: '2px',
+                marginBottom: '4px',
               }}
             >
               <span
                 style={{
                   color: borderColor,
                   flexShrink: 0,
-                  marginTop: '8px',
-                  fontSize: '7px',
+                  marginTop: '7px',
+                  fontSize: '6px',
                   lineHeight: 1,
                 }}
               >
@@ -162,7 +158,7 @@ function renderSection(section, borderColor, accentColor, idx) {
                   fontFamily: LORA,
                   fontSize: '13px',
                   color: '#1A1A1A',
-                  lineHeight: '26px',
+                  lineHeight: 1.6,
                   margin: 0,
                 }}
               >
@@ -181,7 +177,7 @@ function renderSection(section, borderColor, accentColor, idx) {
             fontFamily: LORA,
             fontSize: '12px',
             color: '#888888',
-            lineHeight: '26px',
+            lineHeight: 1.6,
             paddingTop: '12px',
             borderTop: '1px solid #EBEBEB',
             marginBottom: '4px',
@@ -200,7 +196,7 @@ function renderSection(section, borderColor, accentColor, idx) {
             fontSize: '12px',
             color: '#888888',
             fontStyle: 'italic',
-            lineHeight: '26px',
+            lineHeight: 1.6,
             paddingTop: '14px',
             borderTop: '1px solid #EBEBEB',
           }}
@@ -223,23 +219,23 @@ export default function VisualizerCard({ card, testIdSuffix = '' }) {
       style={{
         width: '100%',
         paddingLeft: '20px',
-        borderLeft: `3px solid ${card.borderColor}`,
+        borderLeft: `4px solid ${card.borderColor}`,
         animation: 'fadeSlideUp 0.4s ease-out both',
         overflowY: 'auto',
         maxHeight: '100%',
       }}
     >
-      {/* Card label — always muted gray, never the pastel (would be invisible) */}
+      {/* Card label */}
       <p
         style={{
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: INTER,
           fontSize: '9px',
-          color: '#AAAAAA',
+          color: '#BBBBBB',
           textTransform: 'uppercase',
           letterSpacing: '0.18em',
-          fontWeight: 600,
-          marginBottom: '18px',
-          lineHeight: '26px',
+          fontWeight: 700,
+          marginBottom: '16px',
+          lineHeight: 1.4,
         }}
       >
         {card.title}

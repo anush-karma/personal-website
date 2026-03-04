@@ -253,7 +253,7 @@ export default function Terminal() {
     <div
       onClick={focusInput}
       style={{
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#F9FAFB',
         height: '100vh',
         overflow: 'hidden',
         position: 'relative',
@@ -277,7 +277,7 @@ export default function Terminal() {
               minHeight: '500px',
               backgroundColor: '#0D0D0D',
               border: '1px solid rgba(0,0,0,0.05)',
-              boxShadow: '0 40px 100px rgba(0,0,0,0.07)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.08)',
             }}
           >
             {/* Title Bar */}
@@ -474,9 +474,8 @@ export default function Terminal() {
           className="hidden lg:flex lg:w-2/5 flex-col"
           style={{
             padding: '48px 40px 80px 40px',
-            borderLeft: '1px solid #F0F0F0',
             overflowY: 'auto',
-            backgroundImage: 'repeating-linear-gradient(transparent, transparent 25px, #F1F1F1 25px, #F1F1F1 26px)',
+            backgroundColor: 'transparent',
           }}
         >
           {activeCard === 'log' ? (
@@ -501,7 +500,6 @@ export default function Terminal() {
             maxHeight: '60vh',
             overflow: 'auto',
             animation: 'drawerSlideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1) both',
-            backgroundImage: 'repeating-linear-gradient(transparent, transparent 25px, #F1F1F1 25px, #F1F1F1 26px)',
           }}
         >
           <div style={{ padding: '16px 24px 32px' }}>
