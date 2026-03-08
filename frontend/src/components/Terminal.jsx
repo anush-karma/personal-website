@@ -138,10 +138,10 @@ let _uid = 0;
 const uid = () => ++_uid;
 
 const BOOT_LINES = [
-  'Initializing AK-OS [v1.8]...',
-  'Loading Deep_Tech_Modules...',
-  'System ready. Anushka Karmakar active.',
-  "Type 'help' or use the buttons below.",
+  "Hi, I'm Anushka. Product Marketer for dev tools.",
+  'Loading 5 years of GTM, content, and brand work...',
+  'Ready.',
+  "Type 'whoami' and hit Enter, or use the buttons below.",
 ];
 
 export default function Terminal() {
