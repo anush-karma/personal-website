@@ -127,9 +127,9 @@ function VisualizerPlaceholder() {
           lineHeight: '1.7',
         }}
       >
-        run whoami, log,
+        run ./about, ./work, or ./life
         <br />
-        or status to see more
+        to see more
       </p>
     </div>
   );
@@ -144,8 +144,17 @@ const BOOT_LINES = [
   "Hi, I'm Anushka. Product Marketer for dev tools.",
   'Loading 5 years of GTM, content, and brand work...',
   'Ready.',
-  "Type 'whoami' and hit Enter, or use the buttons below.",
+  "Type './about' and hit Enter, or use the buttons below.",
 ];
+
+const ASCII_AK = [
+  '  \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557  \u2588\u2588\u2557',
+  ' \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2551 \u2588\u2588\u2554\u255d',
+  ' \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2554\u255d ',
+  ' \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2588\u2588\u2557 ',
+  ' \u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2557',
+  ' \u255a\u2550\u255d  \u255a\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u255d',
+].join('\n');
 
 export default function Terminal() {
   const [history, setHistory] = useState([]);
@@ -163,12 +172,10 @@ export default function Terminal() {
     bottomRef.current?.scrollIntoView({ behavior: 'auto' });
   }, []);
 
-  // Auto-scroll when history grows
   useEffect(() => {
     scrollToBottom();
   }, [history, scrollToBottom]);
 
-  // Boot sequence: each line queued at cumulative delay (string length × 20ms)
   useEffect(() => {
     const timeouts = [];
     let delay = 0;
@@ -262,7 +269,6 @@ export default function Terminal() {
         position: 'relative',
       }}
     >
-      {/* ── Main layout: single column on mobile, 60/40 row on desktop ── */}
       <div className="flex h-full">
 
         {/* ── Left Pane: Terminal + Hot Chips ── */}
@@ -315,6 +321,19 @@ export default function Terminal() {
             >
               {/* Boot Header */}
               <div className="mb-6 select-none">
+                <pre
+                  style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    color: '#7F7AFF',
+                    fontSize: '12px',
+                    lineHeight: '1.2',
+                    marginBottom: '12px',
+                    userSelect: 'none',
+                    whiteSpace: 'pre',
+                  }}
+                >
+                  {ASCII_AK}
+                </pre>
                 <p style={{ color: '#7F7AFF', fontWeight: 700, fontSize: '15px' }}>
                   The Kernel — v1.8.0
                 </p>
@@ -509,7 +528,6 @@ export default function Terminal() {
           }}
         >
           <div style={{ padding: '16px 24px 32px' }}>
-            {/* Handle + close row */}
             <div
               style={{
                 position: 'relative',
