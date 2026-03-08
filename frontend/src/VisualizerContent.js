@@ -4,36 +4,36 @@
 
 export const VISUALIZER_CARDS = {
 
-  whoami: {
-    id: 'whoami',
-    title: 'whoami',
+  about: {
+    id: 'about',
+    title: 'about',
     borderColor: '#E6E4FF',
     accentColor: '#6B68C8',
     sections: [
       {
         type: 'header',
-        content: 'Structural GTM',
+        content: 'PMM, DevTools',
       },
       {
         type: 'body',
         content:
-          'Mathematics taught me to look for the underlying structure in any chaotic system. In marketing, that structure is rarely found in a generic playbook. I build brands for developers by prioritizing technical depth and proof over loud claims. If the product is the engine, the brand is the trust that allows a user to hit the ignition.',
+          'Most PMMs pick a lane: they write, or they design, or they do strategy. In the era of AI, that separation makes even less sense. Research is faster, execution is faster, and the only thing that actually differentiates is taste. I build for brand first because metrics are downstream of whether developers actually believe you. And in dev tools, trust is the only thing that compounds.',
       },
     ],
   },
 
-  // log is now rendered as an interactive CareerTree component (see CareerTree.jsx)
+  // work is now rendered as an interactive CareerTree component (see CareerTree.jsx)
 
-  status: {
-    id: 'status',
-    title: 'status',
+  life: {
+    id: 'life',
+    title: 'life',
     borderColor: '#FFE4E9',
     accentColor: '#C06080',
     sections: [
       {
         type: 'body',
         content:
-          'I prefer systems I can touch. When I am not auditing a funnel or writing a changelog, I am working on the physical infrastructure of my home. This involves carpentry, electrical work, or building complex LEGO sets.',
+          'Currently PMM at SigNoz, an open source observability platform. I run, do calisthenics, and live with two Indian Pariah dogs who have strong opinions about my work schedule. This year I am going to Thailand for a week to learn Muay Thai and get punched in the face.',
       },
       {
         type: 'image',
@@ -43,7 +43,7 @@ export const VISUALIZER_CARDS = {
       {
         type: 'footer',
         content:
-          'I live with two Indian Pariah dogs who keep me grounded (and guarded) in the physical world. I also train in calisthenics, focusing on the iterative process of getting stronger.',
+          'Remote from Mumbai. Open to the right opportunity.',
       },
     ],
   },

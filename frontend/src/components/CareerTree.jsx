@@ -54,6 +54,12 @@ const FOLDERS = [
         label: 'Ops',
         content: 'Resolved US/International shipping crises for SRECon and KubeCon.',
       },
+      {
+        id: 'changelog',
+        label: 'Changelog',
+        content: 'Built and own the technical changelog from v0.83, ongoing.',
+        link: 'https://signoz.io/changelog/',
+      },
     ],
   },
   {
@@ -291,17 +297,31 @@ function FolderRow({ folder, isOpen, onToggle, detailRef, idSuffix }) {
               </p>
 
               {/* Body — Lora Serif */}
-              <p
-                style={{
-                  fontFamily: LORA,
-                  fontSize: '13px',
-                  color: BODY_COLOR,
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                {detail.content}
-              </p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                <p
+                  style={{
+                    fontFamily: LORA,
+                    fontSize: '13px',
+                    color: BODY_COLOR,
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  {detail.content}
+                </p>
+                {detail.link && (
+                  <a
+                    href={detail.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#BBBBBB', textDecoration: 'none', fontSize: '13px', flexShrink: 0 }}
+                    onMouseEnter={e => { e.currentTarget.style.color = '#333333'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = '#BBBBBB'; }}
+                  >
+                    ↗
+                  </a>
+                )}
+              </div>
 
               {detail.image && (
                 <TreeImage src={detail.image.src} label={detail.image.label} />

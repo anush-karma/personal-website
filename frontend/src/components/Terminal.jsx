@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import VisualizerCard from './VisualizerCard';
 import CareerTree from './CareerTree';
+import WritingCard from './WritingCard';
 import { VISUALIZER_CARDS } from '../VisualizerContent';
 
 // ─── Command Dictionary ───────────────────────────────────────────────────────
@@ -16,13 +17,15 @@ const LOG_OUTPUT = [
 function resolveCommand(cmd) {
   switch (cmd.trim().toLowerCase()) {
     case 'help':
-      return 'Available commands: [whoami, status, log, clear]';
-    case 'whoami':
-      return 'Anushka Karmakar | Product Marketing Manager | Deep Tech & DevTools';
-    case 'status':
-      return 'LHS = RHS. System: v1.8. Growth logic initialized. Zero-slop environment active.';
-    case 'log':
+      return 'Available commands: [./about, ./work, ./life, ./writing, clear]';
+    case './about':
+      return 'Anushka Karmakar | Product Marketing Manager | DevTools';
+    case './life':
+      return 'Open. Mumbai-based, remote-first.';
+    case './work':
       return LOG_OUTPUT;
+    case './writing':
+      return 'Writing, feature pages, and changelog work.';
     case 'clear':
       return '__CLEAR__';
     case '':
@@ -203,8 +206,8 @@ export default function Terminal() {
       return;
     }
 
-    if (['whoami', 'log', 'status'].includes(cmd)) {
-      setActiveCard(cmd);
+    if (['./about', './work', './life', './writing'].includes(cmd)) {
+      setActiveCard(cmd.slice(2));
     }
 
     const entries = [];
@@ -316,14 +319,14 @@ export default function Terminal() {
                   The Kernel — v1.8.0
                 </p>
                 <p style={{ color: '#888888', marginTop: '2px' }}>
-                  Anushka Karmakar's Portfolio Terminal
+                  Anushka Karmakar | Product Marketing Manager
                 </p>
                 <p style={{ color: '#333333', marginTop: '6px', letterSpacing: '0.05em' }}>
                   {'─'.repeat(54)}
                 </p>
                 <p style={{ color: '#666666', marginTop: '6px' }}>
                   Type{' '}
-                  <span style={{ color: '#7F7AFF' }}>'help'</span>
+                  <span style={{ color: '#7F7AFF' }}>'./about'</span>
                   {' '}to get started.
                 </p>
               </div>
@@ -428,9 +431,10 @@ export default function Terminal() {
             onClick={e => e.stopPropagation()}
           >
             {[
-              { label: 'whoami', bg: '#E6E4FF', text: '#333333', shadow: 'rgba(230,228,255,0.9)' },
-              { label: 'log',    bg: '#FFF9E0', text: '#333333', shadow: 'rgba(255,249,224,1.0)' },
-              { label: 'status', bg: '#FFE4E9', text: '#333333', shadow: 'rgba(255,228,233,0.9)' },
+              { label: './about',   bg: '#E6E4FF', text: '#333333', shadow: 'rgba(230,228,255,0.9)' },
+              { label: './work',    bg: '#FFF9E0', text: '#333333', shadow: 'rgba(255,249,224,1.0)' },
+              { label: './life',    bg: '#FFE4E9', text: '#333333', shadow: 'rgba(255,228,233,0.9)' },
+              { label: './writing', bg: '#E8F5E9', text: '#333333', shadow: 'rgba(232,245,233,0.9)' },
             ].map(({ label, bg, text, shadow }) => (
               <button
                 key={label}
@@ -478,8 +482,10 @@ export default function Terminal() {
             backgroundColor: 'transparent',
           }}
         >
-          {activeCard === 'log' ? (
-            <CareerTree key="log-tree" />
+          {activeCard === 'work' ? (
+            <CareerTree key="work-tree" />
+          ) : activeCard === 'writing' ? (
+            <WritingCard />
           ) : activeCard ? (
             <VisualizerCard key={activeCard} card={VISUALIZER_CARDS[activeCard]} />
           ) : (
@@ -540,8 +546,10 @@ export default function Terminal() {
               </button>
             </div>
 
-            {activeCard === 'log' ? (
-              <CareerTree key="log-tree-mobile" testIdSuffix="-mobile" />
+            {activeCard === 'work' ? (
+              <CareerTree key="work-tree-mobile" testIdSuffix="-mobile" />
+            ) : activeCard === 'writing' ? (
+              <WritingCard />
             ) : (
               <VisualizerCard
                 key={`mobile-${activeCard}`}
