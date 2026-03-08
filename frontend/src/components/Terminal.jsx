@@ -162,6 +162,7 @@ export default function Terminal() {
   const [cmdHistory, setCmdHistory] = useState([]);
   const [histIdx, setHistIdx] = useState(-1);
   const [bootDone, setBootDone] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [currentBootLine, setCurrentBootLine] = useState(-1);
   const [activeCard, setActiveCard] = useState(null);
 
@@ -204,12 +205,14 @@ export default function Terminal() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const processCommand = useCallback((raw) => {
+    setIsProcessing(true);
     const result = resolveCommand(raw);
     const cmd = raw.trim().toLowerCase();
 
     if (result === '__CLEAR__') {
       setHistory([]);
       setActiveCard(null);
+      setTimeout(() => setIsProcessing(false), 1500);
       return;
     }
 
@@ -227,6 +230,7 @@ export default function Terminal() {
     if (entries.length > 0) {
       setHistory(prev => [...prev, ...entries]);
     }
+    setTimeout(() => setIsProcessing(false), 1500);
   }, []);
 
   const onKeyDown = useCallback(
@@ -458,7 +462,7 @@ export default function Terminal() {
               <button
                 key={label}
                 data-testid={`chip-${label}`}
-                disabled={!bootDone}
+                disabled={!bootDone || isProcessing}
                 onClick={() => { processCommand(label); focusInput(); }}
                 style={{
                   backgroundColor: bg,
@@ -468,7 +472,7 @@ export default function Terminal() {
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   fontWeight: 700,
                   fontSize: '13px',
-                  cursor: bootDone ? 'pointer' : 'not-allowed',
+                  cursor: bootDone && !isProcessing ? 'pointer' : 'not-allowed',
                   borderRadius: '8px',
                   opacity: bootDone ? 1 : 0.4,
                   transition: 'all 0.5s ease',

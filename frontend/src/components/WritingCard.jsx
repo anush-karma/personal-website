@@ -50,8 +50,8 @@ function LinkRow({ title, href }) {
       style={{
         display: 'flex',
         alignItems: 'baseline',
-        justifyContent: 'space-between',
-        gap: '12px',
+        justifyContent: 'flex-start',
+        gap: '6px',
         marginBottom: '10px',
       }}
     >
