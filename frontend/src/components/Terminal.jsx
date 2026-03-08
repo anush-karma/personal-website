@@ -315,6 +315,12 @@ export default function Terminal() {
             >
               {/* Boot Header */}
               <div className="mb-6 select-none">
+                <pre style={{ fontFamily: 'JetBrains Mono, monospace', color: '#7F7AFF', fontSize: '12px', lineHeight: '1.2', marginBottom: '12px', userSelect: 'none', whiteSpace: 'pre' }}>{`  █████╗ ██╗  ██╗
+ ██╔══██╗██║ ██╔╝
+ ███████║█████╔╝
+ ██╔══██║██╔═██╗
+ ██║  ██║██║  ██╗
+ ╚═╝  ╚═╝╚═╝  ╚═╝`}</pre>
                 <p style={{ color: '#7F7AFF', fontWeight: 700, fontSize: '15px' }}>
                   The Kernel — v1.8.0
                 </p>
