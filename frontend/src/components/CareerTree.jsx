@@ -31,7 +31,7 @@ const FOLDERS = [
       {
         id: 'mascot',
         label: 'Mascot',
-        content: "Designed and launched 'Olly' (Arctic Bear) at KubeCon NA.",
+        content: 'Launched Olly the mascot at KubeCon with 350+ units of themed merch and established the character as the primary newsletter narrator.',
         image: { src: process.env.PUBLIC_URL + '/olly.png', label: 'Olly' },
       },
       {
@@ -42,17 +42,17 @@ const FOLDERS = [
       {
         id: 'growth',
         label: 'Growth',
-        content: 'Delivered 2x conversion lift on core feature pages via messaging audits.',
+        content: 'Researched, copywrote, and designed final Figma mocks for high intent feature pages which triggered a 2x conversion lift.',
       },
       {
-        id: 'hiring',
-        label: 'Hiring',
-        content: 'Designed the 3-step evaluation process for Brand and DevRel hires.',
+        id: 'competitive',
+        label: 'Competitive',
+        content: 'Published competitive teardowns of ClickStack and New Relic that forced a direct response from competitor leadership and refined the platform positioning.',
       },
       {
         id: 'ops',
         label: 'Ops',
-        content: 'Resolved US/International shipping crises for SRECon and KubeCon.',
+        content: 'Directed the full creative production for the company workation including photography and video editing that achieved peak social engagement.',
       },
       {
         id: 'changelog',
@@ -69,16 +69,28 @@ const FOLDERS = [
     isLast: false,
     details: [
       {
-        id: 'authority',
-        label: 'Authority',
+        id: 'strategy',
+        label: 'Strategy',
         content:
-          'Scaled domain rating from 23 to 56 in 8 days through targeted technical content and backlink architecture.',
+          'Advocated for combining PLG with ABM strategies, creating a dual approach to attract both small and large-ticket-size customers.',
       },
       {
         id: 'research',
         label: 'Research',
         content:
-          'Conducted 172 structured user interviews to define ICP and feed product roadmap decisions.',
+          'Conducted 172 interviews including 47 JTBD-specific to refine ICP, prioritize features, and influence product strategy.',
+      },
+      {
+        id: 'pricing',
+        label: 'Pricing',
+        content:
+          'Collaborated with engineers to design pricing plans based on product telemetry data, reducing customer costs by 60%.',
+      },
+      {
+        id: 'publishing',
+        label: 'Publishing',
+        content:
+          "Published the State of PLS, accurately predicting the vertical's decline and attracting co-authorship offers from industry experts.",
       },
     ],
   },
@@ -92,12 +104,13 @@ const FOLDERS = [
         id: 'product',
         label: 'Product',
         content:
-          'Sole owner of the product spec and GTM from day one. Built the core business logic from the ground up.',
+          'Tried to build a unified booking platform for experiential tourism alongside a Rota Management Software that was acquired.',
       },
       {
-        id: 'exit',
-        label: 'Exit',
-        content: 'Navigated the company from first commit to acquisition.',
+        id: 'learnings',
+        label: 'Learnings',
+        content:
+          'Define the problem statement with clear constraints. Do scrappy things, see what sticks, and double down on the repeatable. Execution is priceless; ideas are cheap.',
       },
     ],
   },
@@ -111,7 +124,7 @@ const FOLDERS = [
         id: 'degree',
         label: 'Degree',
         content:
-          'MSc in International Management, University of Surrey. Systems thinking applied to global market structures.',
+          'MSc Management Studies, University of Surrey. Distinguished Interdisciplinary Thesis.',
       },
     ],
   },
@@ -125,7 +138,7 @@ const FOLDERS = [
         id: 'init',
         label: 'Init',
         content:
-          "First professional commit. Entry point at Pratham, one of India's largest education NGOs. Translating complex impact data into public communication.",
+          'Scaled vocational training programs across 14 centers nationwide. Trained 116 staff and 2,600 students annually. Grew Pace Care revenue from INR 0.5M to INR 2.4M in 18 months.',
       },
     ],
   },
